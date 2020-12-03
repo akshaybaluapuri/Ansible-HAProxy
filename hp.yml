@@ -1,0 +1,42 @@
+---
+- hosts: LB
+  become: yes
+  vars:
+    - HA: haproxy
+  tasks:
+  - name: installing "{{HA}}" on "{{HA}}"-server
+    package:
+      name: "{{HA}}"
+  
+  - name: copying ha-proxy file
+    copy:
+      src: "/root/ansible/haproxy.cfg"
+      dest: "/etc/haproxy/haproxy.cfg" 
+
+- hosts: WS
+  tasks:
+  - name: installing httpd server
+    package:
+      name: "{{item}}"
+    with_items: 
+      - httpd
+      - php
+  
+  - name: copying index.php
+    copy:
+      src: ./index.php
+      dest: /var/www/html/index.php
+  
+  - name: enabling httpd service
+    service:
+      name: httpd
+      state: restarted
+      enabled: true
+
+- hosts: LB
+  tasks: 
+  - name: enabling haproxy server
+    service:
+      name: haproxy
+      state: restarted
+      enabled: true

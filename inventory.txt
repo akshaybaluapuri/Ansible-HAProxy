@@ -1,0 +1,8 @@
+[LB]
+192.168.1.10 ansible_ssh_user=root ansible_ssh_pass=redhat
+
+
+[WS]
+192.168.1.8 ansible_ssh_user=root ansible_ssh_pass=redhat
+192.168.1.9 ansible_ssh_user=root ansible_ssh_pass=redhat
+
